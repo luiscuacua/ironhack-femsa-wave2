@@ -27,6 +27,6 @@ public Optional<List<Product>> getRangeProducts(int startId, int endId) {
 //posterior en en otro metodo se puede llamar a este metodo para obtener todos los productos de una sola vez
 public class ProductLoader {
     public List<Product> loadProducts() {
-        return database.getRangeProducts(1, 100);
+        return database.getRangeProducts(1, 100).get();
     }
 }

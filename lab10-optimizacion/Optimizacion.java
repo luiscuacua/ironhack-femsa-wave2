@@ -15,11 +15,13 @@ public class ProductLoader {
 //ejemplo crear un metodo que consulte y devuelva la lista de productos:
 "SELECT p FROM Product p WHERE p.id BETWEEN :startId AND :endId"
 
-public List<Product> getRangeProducts(int startId, int endId) {
-    return entityManager.createQuery("SELECT p FROM Product p WHERE p.id BETWEEN :startId AND :endId", Product.class)
+public Optional<List<Product>> getRangeProducts(int startId, int endId) {
+    List<Product> result = entityManager.createQuery("SELECT p FROM Product p WHERE p.id BETWEEN :startId AND :endId", Product.class)
             .setParameter("startId", startId)
             .setParameter("endId", endId)
             .getResultList();
+
+    return Optional.of(result);
 }
 
 //posterior en en otro metodo se puede llamar a este metodo para obtener todos los productos de una sola vez

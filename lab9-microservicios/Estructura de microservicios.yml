@@ -1,0 +1,62 @@
+- Esquema de Arquitectura de Microservicios:
+    1 Un diagrama de la arquitectura propuesta.
+    2 Explicación de cómo interactúan los servicios y el flujo de comunicación entre ellos.
+
+
+    - microservicio autenticacion de usuarios: Este se ha creado un microservicio que se encarge solo de la autenticacion de usuarios
+      - POST users/login: este endpoint se encargara de autenticar a un usuario, este endpoint recibira un email y una contraseña, y devolvera un token de autenticacion
+      - POST users/logout: este endpoint se encargara de cerrar la sesion de un usuario, este endpoint recibira un token de autenticacion, y devolvera un mensaje de exito
+
+    - microservicio Gestión de usuarios: este seria otro microservicio, este se encargaria de crear, actualizar y consultar usuarios. Tambien de gestionar la informacion personal de cada usuario. Este microservicio sera consumido por el microservicio de de autenticacion para consultar los usuarios
+      - POST users/: este endpoint se encargara de crear un usuario, este endpoint recibira un email, una contraseña, un nombre y un apellido, y devolvera un usuario
+      - GET users/{id}: este endpoint se encargara de consultar un usuario, este endpoint recibira un id de usuario, y devolvera un usuario
+      - UPDATE users/: este endpoint se encargara de actualizar un usuario, este endpoint recibira un id de usuario, un email, un nombre y un apellido, y devolvera un usuario
+
+    - microservicio Catálogo de productos: este microservicio solo creara, actualizara y consultara los catalogos de productos(descripcion, precio, imagenes, etc), 
+      - POST products/: este endpoint se encargara de crear un producto, este endpoint recibira un nombre, una descripcion
+      - GET products/: este endpoint se encargara de consultar un producto, este endpoint recibira un id de producto, y devolvera un producto
+      - GET products/{id}: este endpoint se encargara de consultar un producto, este endpoint recibira un nombre de producto, y devolvera un producto
+      - UPDATE products/: este endpoint se encargara de actualizar un producto, este endpoint recibira un id de producto, un nombre, una descripcion, y devolvera un producto
+
+    - microservicio Procesamiento de pedidos: este microservicio permitira crear un pedido, actualizar y consultar un pedido, asi como consultar su historial de un pedido
+      - POST orders/: este endpoint se encargara de crear un pedido, este endpoint recibira un id de usuario, un id de producto, una cantidad, y devolvera un pedido
+      - GET orders/: este endpoint se encargara de consultar un pedido, este endpoint recibira un id de pedido, y devolvera un pedido
+      - GET orders/{id}: este endpoint se encargara de consultar un pedido, este endpoint recibira un id de usuario, y devolvera un pedido
+      - UPDATE orders/: este endpoint se encargara de actualizar un pedido, este endpoint recibira un id de pedido, un id de usuario, un id de producto, una cantidad, y devolvera un pedido
+
+    - microservicio Pagos: este microservicio solo se encargara de crear pagos.
+      - POST payments/: este endpoint se encargara de crear un pago, este endpoint recibira un id de pedido, un monto, y devolvera un pago
+      - GET payments/: este endpoint se encargara de consultar un pago, este endpoint recibira un id de pago, y devolvera un pago
+      - GET payments/{id}: este endpoint se encargara de consultar un pago, este endpoint recibira un id de pedido, y devolvera un pago
+
+    - microservicio tickets: este microservicio se encargar de crear, actualizar y consultar tickets con relacion de un cliente con respecto a sus pedidos
+      - POST tickets/: este endpoint se encargara de crear un ticket, este endpoint recibira un id de usuario, un id de pedido, un mensaje, y devolvera un ticket
+      - GET tickets/: este endpoint se encargara de consultar un ticket, este endpoint recibira un id de ticket, y devolvera un ticket
+      - GET tickets/{id}: este endpoint se encargara de consultar un ticket, este endpoint recibira un id de usuario, y devolvera un ticket
+      - UPDATE tickets/: este endpoint se encargara de actualizar un ticket, este endpoint recibira un id de ticket, un id de usuario, un id de pedido, un mensaje, y devolvera un ticket
+
+    - microservicio Atención al cliente:  de crear una queja del cliente, crear comentarios de un cliente y tener el control de devoluciones de pedidos.
+      - POST complaints/: este endpoint se encargara de crear una queja, este endpoint recibira un id de usuario, un mensaje, y devolvera una queja
+      - GET complaints/: este endpoint se encargara de consultar una queja, este endpoint recibira un id de queja, y devolvera una queja
+      - GET complaints/{id}: este endpoint se encargara de consultar una queja, este endpoint recibira un id de usuario, y devolvera una queja
+      - UPDATE complaints/: este endpoint se encargara de actualizar una queja, este endpoint recibira un id de queja, un id de usuario, un mensaje, y devolvera una queja
+      - POST comments/: este endpoint se encargara de crear un comentario, este endpoint recibira un id de usuario, un mensaje, y devolvera un comentario
+      - GET comments/: este endpoint se encargara de consultar un comentario, este endpoint recibira un id de comentario, y devolvera un s comentario
+      - GET comments/{id}: este endpoint se encargara de consultar un comentario, este endpoint recibira un id de usuario, y devolvera un comentario
+      - UPDATE comments/: este endpoint se encargara de actualizar un comentario, este endpoint recibira un id de comentario, un id de usuario, un mensaje, y devolvera un comentario
+      - POST returns/: este endpoint se encargara de crear una devolucion, este endpoint recibira un id de usuario, un id de pedido, un mensaje, y devolvera una devolucion
+      - GET returns/: este endpoint se encargara de consultar una devolucion, este endpoint recibira un id de devolucion, y devolvera una devolucion
+      - GET returns/{id}: este endpoint se encargara de consultar una devolucion, este endpoint recibira un id de usuario, y devolvera una devolucion
+
+
+- Plan de Migración Detallado:
+    1 Prioridades de migración de servicios: se debe priorizar la migración de los servicios que tengan mayor dependencia de otros servicios, para evitar problemas de comunicación.
+    2 Estrategia para manejar dependencias de datos: cada microservicio tiene una tarea en especifico por lo que debe tener su propia base de datos, para evitar problemas de concurrencia y escalabilidad.
+    3 Descripción del proceso de migración de la base de datos monolítica a un entorno de microservicios: se debe migrar la base de datos monolitica a una base de datos distribuida, para que cada microservicio tenga su propia base de datos.
+
+
+- Informe de Reflexión:
+    1 Discusión sobre los desafíos enfrentados en el diseño y las decisiones de migración.
+      - Autenticación y Autorización: Los microservicios deben gestionar la seguridad de forma independiente, por ejemplo utilizando OAuth 2.0 y JWT para manejar la autenticación y autorización a nivel de servicio.
+      - API Gateway: Un API Gateway puede ser utilizado para centralizar la gestión de la seguridad, controlando el acceso y delegando la autenticación/autorización a otros servicios como un servicio de identidad.
+      - Comunicación entre microservicios: para esta estrategua se utilizo el protocolo HTTP REST, para la comunicacion entre los microservicios.
